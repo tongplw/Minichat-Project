@@ -13,7 +13,7 @@ logged_in_users = []
 channel_list = []
 history = {}
 channel_template = """
-<li class="{is_active}">
+<li class=" {is_active}">
 <div class="d-flex bd-highlight">
 <div class="user_info">
 <span>{channel_name}</span>

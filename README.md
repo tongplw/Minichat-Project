@@ -1,3 +1,3 @@
-# Project 2
+# Minichat Project
 
-CS50 Web Programming with Python and JavaScript
+test test hello

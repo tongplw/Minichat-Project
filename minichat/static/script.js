@@ -17,7 +17,7 @@ document.addEventListener("DOMContentLoaded", () => {
 
 
         };
-
+        
         // configure Send button
         sendMessageBtn = document.querySelector(".input-group-append");
         sendMessageBtn.onclick = () => {
@@ -25,6 +25,13 @@ document.addEventListener("DOMContentLoaded", () => {
             const text = document.querySelector(".type_msg");
             socket.emit("send message", { "text": text.value })
             text.value = "";
+        };
+
+        textArea = document.querySelector(".type_msg");
+        textArea.onkeydown = (event) => {
+            if (event.keyCode === 13) { 
+                sendMessageBtn.click(); 
+            }
         };
 
         // load channels

@@ -1,16 +1,18 @@
 steps:
     - name: 'gcr.io/cloud-builders/docker'
-      args: ['build', '-t', 'gcr.io/my-project/my-image', '.']
+      args: ['build', '-t', 'gcr.io/minichat-274103/chat', '.']
       timeout: 500s
+
     - name: 'gcr.io/cloud-builders/docker'
-      args: ['push', 'gcr.io/my-project/my-image']
+      args: ['push', 'gcr.io/minichat-274103/chat']
+
     - name: 'gcr.io/cloud-builders/kubectl'
-      args: ['set', 'image', 'deployment/my-deployment', 'my-container=gcr.io/my-project/my-image']
+      args: ['set', 'image', 'deployment/my-deployment', 'my-container=gcr.io/minichat-274103/chat']
       env:
-      - 'CLOUDSDK_COMPUTE_ZONE=us-east4-b'
+      - 'CLOUDSDK_COMPUTE_ZONE=asia-southeast1-b'
       - 'CLOUDSDK_CONTAINER_CLUSTER=my-cluster'
     options:
         machineType: 'N1_HIGHCPU_8'
     timeout: 660s
     tags: ['mytag1', 'mytag2']
-    images: ['gcr.io/my-project/myimage']
+    images: ['gcr.io/minichat-274103/chat']

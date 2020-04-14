@@ -1,4 +1,5 @@
 import os
+import sqlalchemy
 from functools import wraps
 
 from flask import Flask, session, render_template, request, redirect, url_for
@@ -194,6 +195,13 @@ def load_channels():
                 for channel in channel_list
             ],
         )
+
+def save_message_to_db(message):
+    db = sqlalchemy.create_engine('mysql+pymysql://root:root@127.0.0.1/minichat')
+    cmd = f'INSERT INTO minichat.message (name) VALUES ({message});'
+    with db.connect() as conn:
+        result = conn.execute(cmd)
+        
 
 if __name__ == '__main__':
     socketio.run(app)

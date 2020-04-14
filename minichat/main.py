@@ -105,6 +105,9 @@ def send_message(message):
         username = session.get("username")
         history[channel].append((username, message["text"]))
 
+        # save message to database
+        save_message_to_db(message["text"])
+
         # send msg for current user
         emit(
             "receive message",
@@ -201,7 +204,7 @@ def save_message_to_db(message):
     cmd = f'INSERT INTO minichat.message (name) VALUES ({message});'
     with db.connect() as conn:
         result = conn.execute(cmd)
-        
+
 
 if __name__ == '__main__':
     socketio.run(app)

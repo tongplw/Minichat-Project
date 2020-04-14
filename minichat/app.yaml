@@ -3,12 +3,8 @@ env: flex
 
 entrypoint: gunicorn -b :$PORT -k flask_sockets.worker main:app
 
-env_variables:
-  SQLALCHEMY_DATABASE_URI: >-
-    mysql+pymysql://root:PASSWORD@/minichat?unix_socket=/cloudsql/minichat-274103:asia-southeast1:minichat-database
-
 runtime_config:
   python_version: 3
 
 manual_scaling:
-  instances: 2
+  instances: 1

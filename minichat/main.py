@@ -1,6 +1,6 @@
 import os
+import database as db
 
-from database import *
 from functools import wraps
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask import Flask, session, render_template, request, redirect, url_for
@@ -69,7 +69,7 @@ def login():
     logged_in_users.append(username)
 
     # add user into database
-    create_user(username)
+    db.create_user(username)
 
     return redirect(url_for("chat"))
 
@@ -97,7 +97,7 @@ def create_channel(name):
         emit("channel created", data, broadcast=True)
 
         # add channel into database
-        create_group(n)
+        db.create_group(n)
 
 
 @socketio.on("send message")
@@ -139,7 +139,8 @@ def send_message(message):
         )
 
         # save message to database
-        create_message(message["text"], username, channel)
+        db.create_message(message["text"], username, channel)
+
 
 @socketio.on("connect to channel")
 def connect_to_channel(channel):

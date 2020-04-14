@@ -4,12 +4,12 @@ env: flex
 entrypoint: gunicorn -b :$PORT -k flask_sockets.worker main:app
 
 env_variables:
-  CLOUDSQL_CONNECTION_NAME: ${INSTANCE_CONNECTION_NAME}
-  CLOUDSQL_USER: ${DB_USER}
-  CLOUDSQL_PASSWORD: ${DB_PASSWORD}
+  CLOUDSQL_CONNECTION_NAME: ${{ secrets.INSTANCE_CONNECTION_NAME }}
+  CLOUDSQL_USER: ${{ secrets.db_user }}
+  CLOUDSQL_PASSWORD: ${{ secrets.db_password }}
 
 beta_settings:
-  cloud_sql_instances: ${INSTANCE_CONNECTION_NAME}
+  cloud_sql_instances: ${{ secrets.INSTANCE_CONNECTION_NAME }}
 
 runtime_config:
   python_version: 3

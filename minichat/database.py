@@ -25,3 +25,12 @@ def create_group(name):
     cmd = f'INSERT INTO minichat.groups (name) VALUES ("{name}");'
     with db.connect() as conn:
         conn.execute(cmd)
+
+def load_channels():
+    pass
+
+def load_users():
+    pass
+
+def load_channels_history():
+    pass

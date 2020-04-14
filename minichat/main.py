@@ -96,6 +96,7 @@ def create_channel(name):
         history[n] = []
         data = channel_template.format(is_active="", channel_name=n)
         emit("channel created", data, broadcast=True)
+        connect_to_channel(n)
 
         # add channel into database
         db.create_group(n)

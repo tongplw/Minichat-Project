@@ -13,7 +13,7 @@ socketio = SocketIO(app)
 
 logged_in_users = db.load_users()
 channel_list = db.load_channels()
-history = load_channels_history()
+history = db.load_channels_history()
 
 channel_template = """
 <li class="{is_active}">

@@ -3,6 +3,11 @@ env: flex
 
 entrypoint: gunicorn -b :$PORT -k flask_sockets.worker main:app
 
+env_variables:
+  CLOUDSQL_CONNECTION_NAME: minichat-274103:asia-southeast1:minichat-database
+  CLOUDSQL_USER: root
+  CLOUDSQL_PASSWORD: root
+
 beta_settings:
   cloud_sql_instances: minichat-274103:asia-southeast1:minichat-database
 

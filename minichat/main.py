@@ -196,7 +196,7 @@ def load_channels():
         )
 
 if __name__ == '__main__':
-    socketio.run(app)
+    socketio.run(app, debug=True)
     print("""
 This can not be run directly because the Flask development server does not
 support web sockets. Instead, use gunicorn:

@@ -105,8 +105,6 @@ def send_message(message):
         username = session.get("username")
         history[channel].append((username, message["text"]))
 
-        # save message to database
-        save_message_to_db(message["text"])
 
         # send msg for current user
         emit(
@@ -133,6 +131,8 @@ def send_message(message):
             include_self=False,
         )
 
+        # save message to database
+        save_message_to_db(message["text"])
 
 @socketio.on("connect to channel")
 def connect_to_channel(channel):
@@ -200,11 +200,19 @@ def load_channels():
         )
 
 def save_message_to_db(message):
-    db = sqlalchemy.create_engine('mysql+pymysql://root:root@127.0.0.1/minichat')
+    db = sqlalchemy.create_engine(
+        sqlalchemy.engine.url.URL(
+            drivername="mysql+pymysql",
+            username="root",
+            password="root",
+            database="minichat",
+            query={"unix_socket": "/cloudsql/minichat-274103:asia-southeast1:minichat-database"},
+        )
+    )
     cmd = f'INSERT INTO minichat.message (name) VALUES ({message});'
     with db.connect() as conn:
         result = conn.execute(cmd)
-
+    print(result)
 
 if __name__ == '__main__':
     socketio.run(app)

@@ -12,12 +12,12 @@ db = sqlalchemy.create_engine(
     )
 
 def create_message(message, user_id, group_id):
-    cmd = f'INSERT INTO minichat.message (message, user, group) VALUES ("{message}", "{user_id}", "{group_id}");'
+    cmd = f'INSERT INTO minichat.message (message, user_id, group_id) VALUES ("{message}", "{user_id}", "{group_id}");'
     with db.connect() as conn:
         conn.execute(cmd)
 
 def create_user(name):
-    cmd = f'INSERT INTO minichat.users (name) VALUES ("{name}");'
+    cmd = f'INSERT INTO minichat.users (username) VALUES ("{name}");'
     with db.connect() as conn:
         conn.execute(cmd)
 

@@ -68,6 +68,9 @@ def login():
     print(session)
     logged_in_users.append(username)
 
+    # add user into database
+    create_user(username)
+
     return redirect(url_for("chat"))
 
 
@@ -92,6 +95,9 @@ def create_channel(name):
         history[n] = []
         data = channel_template.format(is_active="", channel_name=n)
         emit("channel created", data, broadcast=True)
+
+        # add channel into database
+        create_group(n)
 
 
 @socketio.on("send message")
@@ -133,7 +139,7 @@ def send_message(message):
         )
 
         # save message to database
-        create_message(message["text"])
+        create_message(message["text"], username, channel)
 
 @socketio.on("connect to channel")
 def connect_to_channel(channel):

@@ -200,17 +200,18 @@ def load_channels():
             ],
         )
 
-        
-def save_message_to_db(message):
-    db = sqlalchemy.create_engine(
+
+db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
             drivername="mysql+pymysql",
             username="root",
             password="root",
             database="minichat-database",
             query={"unix_socket": "/cloudsql/minichat-274103:asia-southeast1:minichat-database"},
-        )
+        ),
     )
+
+def save_message_to_db(message):
     cmd = f'INSERT INTO minichat.message (name) VALUES ({message});'
     with db.connect() as conn:
         result = conn.execute(cmd)

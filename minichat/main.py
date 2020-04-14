@@ -11,8 +11,8 @@ app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
 
 
-logged_in_users = []
-channel_list = []
+logged_in_users = db.load_users()
+channel_list = db.load_channels()
 history = {}
 
 channel_template = """

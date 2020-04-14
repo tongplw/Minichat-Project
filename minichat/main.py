@@ -206,7 +206,7 @@ db = sqlalchemy.create_engine(
             drivername="mysql+pymysql",
             username="root",
             password="root",
-            database="minichat-database",
+            database="minichat",
             query={"unix_socket": "/cloudsql/minichat-274103:asia-southeast1:minichat-database"},
         ),
     )

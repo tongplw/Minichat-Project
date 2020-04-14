@@ -2,3 +2,5 @@ venv
 .vscode
 __pycache__
 flask_session
+/minichat/node_modules
+/minichat/.env

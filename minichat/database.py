@@ -39,7 +39,7 @@ def load_users():
         return [i[0] for i in result.fetchall()]
 
 def load_channels_history():
-    cmd = f'SELECT * FROM minichat.message;'
+    cmd = f'SELECT * FROM minichat.messages;'
     with db.connect() as conn:
         result = conn.execute(cmd)
         

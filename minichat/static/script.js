@@ -23,13 +23,14 @@ document.addEventListener("DOMContentLoaded", () => {
         sendMessageBtn.onclick = () => {
             //take message
             const text = document.querySelector(".type_msg");
-            socket.emit("send message", { "text": text.value })
+            socket.emit("send message", { "text": text.value });
             text.value = "";
         };
-
+        
         textArea = document.querySelector(".type_msg");
-        textArea.onkeydown = (event) => {
+        textArea.onkeypress = (event) => {
             if (event.keyCode === 13) { 
+                event.preventDefault();
                 sendMessageBtn.click(); 
             }
         };

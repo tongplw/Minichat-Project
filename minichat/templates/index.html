@@ -1,8 +1,22 @@
 {% extends 'layout.html' %}
 
 {% block body %}
-    <form action="/login" method="POST">
-        <input name="username" type="text" required min="3" max="10" placeholder="Input you username">
-        <input type="submit" value="Sign in">
-    </form>
+<div class="container-fluid h-100">
+    <div class="row justify-content-center h-100">
+        <div class="col-md-6 col-xl-39 chat">
+            <div class="card mb-sm-3 mb-md-0 contacts_card justify-content-center">
+            
+                <form class="row justify-content-center" action="/login" method="POST">
+                    <div class="input-group" style="width: 300px;">
+                        <input class="form-control search " name="username" type="text" required min="3" max="10" placeholder="Input you username">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text search_btn"><i class="far fa-plus-square"></i></span>
+                        </div>
+                    </div>
+                </form>
+
+            </div>
+        </div>
+    </div>
+</div>
 {% endblock %}

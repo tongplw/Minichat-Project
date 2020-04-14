@@ -5,6 +5,7 @@ from functools import wraps
 from flask import Flask, session, render_template, request, redirect, url_for
 from flask_socketio import SocketIO, emit, join_room, leave_room
 
+
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
@@ -199,13 +200,14 @@ def load_channels():
             ],
         )
 
+        
 def save_message_to_db(message):
     db = sqlalchemy.create_engine(
         sqlalchemy.engine.url.URL(
             drivername="mysql+pymysql",
             username="root",
             password="root",
-            database="minichat",
+            database="minichat-database",
             query={"unix_socket": "/cloudsql/minichat-274103:asia-southeast1:minichat-database"},
         )
     )
@@ -213,6 +215,7 @@ def save_message_to_db(message):
     with db.connect() as conn:
         result = conn.execute(cmd)
     print(result)
+
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)

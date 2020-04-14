@@ -27,10 +27,16 @@ def create_group(name):
         conn.execute(cmd)
 
 def load_channels():
-    pass
+    cmd = f'SELECT * FROM minichat.groups;'
+    with db.connect() as conn:
+        conn.execute(cmd)
 
 def load_users():
-    pass
+    cmd = f'SELECT * FROM minichat.users;'
+    with db.connect() as conn:
+        conn.execute(cmd)
 
 def load_channels_history():
-    pass
+    cmd = f'SELECT * FROM minichat.message;'
+    with db.connect() as conn:
+        conn.execute(cmd)

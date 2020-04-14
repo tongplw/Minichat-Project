@@ -14,21 +14,22 @@ socketio = SocketIO(app)
 logged_in_users = []
 channel_list = []
 history = {}
+
 channel_template = """
 <li class="{is_active}">
-<div class="d-flex bd-highlight">
-<div class="user_info">
-<span>{channel_name}</span>
-</div>
-</div>
+    <div class="d-flex bd-highlight">
+        <div class="user_info">
+            <span>{channel_name}</span>
+        </div>
+    </div>
 </li>
 """
 
 msg_template = """
 <div class="d-flex justify-content-{to_user} mb-4">
-<div class="msg_cotainer{send}">
-<b>{username} </b>{text}
-</div>
+    <div class="msg_cotainer{send}">
+        <b>{username} </b>{text}
+    </div>
 </div>
 """
 

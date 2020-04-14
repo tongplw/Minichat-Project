@@ -1,10 +1,9 @@
 import os
-import logging
-import sqlalchemy
-from functools import wraps
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from database import *
+from functools import wraps
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask import Flask, session, render_template, request, redirect, url_for
 
 
 app = Flask(__name__)
@@ -134,7 +133,7 @@ def send_message(message):
         )
 
         # save message to database
-        save_message_to_db(message["text"])
+        create_message(message["text"])
 
 @socketio.on("connect to channel")
 def connect_to_channel(channel):
@@ -200,22 +199,6 @@ def load_channels():
                 for channel in channel_list
             ],
         )
-
-
-db = sqlalchemy.create_engine(
-        sqlalchemy.engine.url.URL(
-            drivername="mysql+pymysql",
-            username="root",
-            password="root",
-            database="minichat",
-            query={"unix_socket": "/cloudsql/minichat-274103:asia-southeast1:minichat-database"},
-        ),
-    )
-
-def save_message_to_db(message):
-    cmd = f'INSERT INTO minichat.message (name) VALUES ("{message}");'
-    with db.connect() as conn:
-        result = conn.execute(cmd)
 
 
 if __name__ == '__main__':

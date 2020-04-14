@@ -1,4 +1,5 @@
 import os
+import logging
 import sqlalchemy
 from functools import wraps
 
@@ -212,9 +213,11 @@ db = sqlalchemy.create_engine(
     )
 
 def save_message_to_db(message):
+    logging.warning(f"sending message '{message}' to database")
     cmd = f'INSERT INTO minichat.message (name) VALUES ({message});'
     with db.connect() as conn:
         result = conn.execute(cmd)
+        logging.warning(result)
     print(result)
 
 

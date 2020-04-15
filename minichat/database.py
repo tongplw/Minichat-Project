@@ -15,11 +15,6 @@ def escape(text):
     text = text.replace("'", "\\'")
     text = text.replace('"', '\\"')
     return text
-
-def unescape(text):
-    text = text.replace('\\"', '\"')
-    text = text.replace("\\'", "\'")
-    return text
     
 def create_message(message, user_id, group_id):
     message = escape(message)
@@ -54,7 +49,7 @@ def load_users():
         return [i[0] for i in result.fetchall()]
 
 def load_channels_history():
-    cmd = f'SELECT * FROM minichat.messages;'
+    cmd = f'SELECT * FROM minichat.messages ORDER BY sent_on;'
     with db.connect() as conn:
         result = conn.execute(cmd)
     history = {}

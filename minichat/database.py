@@ -57,11 +57,10 @@ def load_channels_history():
     cmd = f'SELECT * FROM minichat.messages;'
     with db.connect() as conn:
         result = conn.execute(cmd)
-        
-        history = {}
-        for record in result.fetchall():
-            message, username, channel = record[1:4]
-            if channel not in history:
-                history[channel] = []
-            history[channel].append((username, message))
-        return history
+    history = {}
+    for channel in load_channels():
+        history[channel] = []
+    for record in result.fetchall():
+        message, username, channel = record[1:4]
+        history[channel].append((username, message))
+    return history

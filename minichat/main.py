@@ -96,7 +96,6 @@ def create_channel(name):
         history[n] = []
         data = channel_template.format(is_active="", channel_name=n)
         emit("channel created", data, broadcast=True)
-        connect_to_channel(n)
 
         # add channel into database
         db.create_group(n)
@@ -212,8 +211,3 @@ def load_channels():
 
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    print("""
-This can not be run directly because the Flask development server does not
-support web sockets. Instead, use gunicorn:
-gunicorn -b 127.0.0.1:8080 -k flask_sockets.worker main:app
-""")

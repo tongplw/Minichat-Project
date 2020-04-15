@@ -1,4 +1,4 @@
-{% extends 'layout.html' %}
+{% extends 'layout_index.html' %}
 
 {% block body %}
 <div class="container-fluid h-100">
@@ -9,8 +9,8 @@
                 <form class="row justify-content-center" action="/login" method="POST">
                     <div class="input-group" style="width: 300px;">
                         <input class="form-control search " name="username" type="text" required min="3" max="10" placeholder="Input you username">
-                        <div type="submit" class="input-group-prepend" onclick="this.parentNode.parentNode.submit()">
-                            <span class="input-group-text search_btn"><i class="far fa-plus-square"></i></span>
+                        <div type="submit" onclick="this.parentNode.parentNode.submit()">
+                            <span class="input-group-text search_btn" style="height: 38px"><i class="far fa-plus-square"></i></span>
                         </div>
                     </div>
                 </form>

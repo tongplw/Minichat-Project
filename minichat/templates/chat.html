@@ -50,6 +50,7 @@
 
 
 <script>
+    const axios = require('axios').default;
     function logout(){
         axios.post("/logout").catch(error => console.log(error));
     }

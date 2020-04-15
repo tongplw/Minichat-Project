@@ -4,3 +4,5 @@ __pycache__
 flask_session
 /minichat/node_modules
 /minichat/.env
+flask_session
+.env

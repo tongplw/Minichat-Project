@@ -1,34 +1,43 @@
 import os
-from functools import wraps
+import database as db
 
-from flask import Flask, session, render_template, request, redirect, url_for
+from functools import wraps
 from flask_socketio import SocketIO, emit, join_room, leave_room
+from flask import Flask, session, render_template, request, redirect, url_for
+
 
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
 
 
-logged_in_users = []
-channel_list = []
-history = {}
+logged_in_users = db.load_users()
+channel_list = db.load_channels()
+history = db.load_channels_history()
+
 channel_template = """
 <li class="{is_active}">
-<div class="d-flex bd-highlight">
-<div class="user_info">
-<span>{channel_name}</span>
-</div>
-</div>
+    <div class="d-flex bd-highlight">
+        <div class="user_info">
+            <span>{channel_name}</span>
+        </div>
+    </div>
 </li>
 """
 
 msg_template = """
 <div class="d-flex justify-content-{to_user} mb-4">
-<div class="msg_cotainer{send}">
-<b>{username} </b>{text}
-</div>
+    <div class="msg_cotainer{send}">
+        <b>{username} </b>{text}
+    </div>
 </div>
 """
+
+def sync_db():
+    global logged_in_users, channel_list, history
+    logged_in_users = db.load_users()
+    channel_list = db.load_channels()
+    history = db.load_channels_history()
 
 
 def logged_in(func):
@@ -66,12 +75,25 @@ def login():
     print(session)
     logged_in_users.append(username)
 
+    # add user into database
+    db.create_user(username)
+
     return redirect(url_for("chat"))
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    username = session["username"]
+    
+    # delete session username
+    session.pop("username")
+    logged_in_users.pop(username)
+
+    return redirect(url_for("index"))
 
 @app.route("/chat")
 @logged_in
 def chat():
+    sync_db()
     return render_template(
         "chat.html", page_title="Chat", username=session.get("username")
     )
@@ -91,6 +113,9 @@ def create_channel(name):
         data = channel_template.format(is_active="", channel_name=n)
         emit("channel created", data, broadcast=True)
 
+        # add channel into database
+        db.create_group(n)
+
 
 @socketio.on("send message")
 def send_message(message):
@@ -103,6 +128,7 @@ def send_message(message):
         channel = session.get("channel")
         username = session.get("username")
         history[channel].append((username, message["text"]))
+
 
         # send msg for current user
         emit(
@@ -128,6 +154,9 @@ def send_message(message):
             room=session.get("channel"),
             include_self=False,
         )
+
+        # save message to database
+        db.create_message(message["text"], username, channel)
 
 
 @socketio.on("connect to channel")
@@ -195,10 +224,6 @@ def load_channels():
             ],
         )
 
+
 if __name__ == '__main__':
     socketio.run(app, debug=True)
-    print("""
-This can not be run directly because the Flask development server does not
-support web sockets. Instead, use gunicorn:
-gunicorn -b 127.0.0.1:8080 -k flask_sockets.worker main:app
-""")

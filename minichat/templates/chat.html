@@ -48,3 +48,9 @@
     </div>
 </div>    
 {% endblock %}
+
+<script>
+function logout(){
+    axios.post("/logout").catch(error => console.log(error));
+}
+</script>

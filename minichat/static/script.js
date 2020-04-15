@@ -121,8 +121,3 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return false;
 });
-
-
-function logout(){
-    axios.post("/logout").catch(error => console.log(error));
-}

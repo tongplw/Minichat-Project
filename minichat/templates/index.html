@@ -9,7 +9,7 @@
                 <form class="row justify-content-center" action="/login" method="POST">
                     <div class="input-group" style="width: 300px;">
                         <input class="form-control search " name="username" type="text" required min="3" max="10" placeholder="Input you username">
-                        <div class="input-group-prepend">
+                        <div type="submit" onclick="this.parentNode.submit()">
                             <span class="input-group-text search_btn"><i class="far fa-plus-square"></i></span>
                         </div>
                     </div>
@@ -20,3 +20,5 @@
     </div>
 </div>
 {% endblock %}
+
+<script src="../static/script.js"></script>

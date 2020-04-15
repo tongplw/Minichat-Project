@@ -26,7 +26,7 @@ document.addEventListener("DOMContentLoaded", () => {
             socket.emit("send message", { "text": text.value });
             text.value = "";
         };
-        
+    
         textArea = document.querySelector(".type_msg");
         textArea.onkeypress = (event) => {
             if (event.keyCode === 13) { 
@@ -121,3 +121,8 @@ document.addEventListener("DOMContentLoaded", () => {
 
     return false;
 });
+
+
+function logout(){
+    axios.post("/logout").catch(error => console.log(error));
+}

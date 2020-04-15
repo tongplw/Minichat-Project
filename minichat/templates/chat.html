@@ -48,7 +48,7 @@
     </div>
 </div>   
 <script>
-    import axios from 'axios';
+    import axios from 'minichat/node_modules/axios';
     function logout(){
         axios.post("/logout").catch(error => console.log(error));
     }

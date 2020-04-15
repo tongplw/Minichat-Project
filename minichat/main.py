@@ -33,6 +33,12 @@ msg_template = """
 </div>
 """
 
+def sync_db():
+    global logged_in_users, channel_list, history
+    logged_in_users = db.load_users()
+    channel_list = db.load_channels()
+    history = db.load_channels_history()
+
 
 def logged_in(func):
     @wraps(func)
@@ -78,6 +84,7 @@ def login():
 @app.route("/chat")
 @logged_in
 def chat():
+    sync_db()
     return render_template(
         "chat.html", page_title="Chat", username=session.get("username")
     )

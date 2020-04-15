@@ -11,6 +11,16 @@ db = sqlalchemy.create_engine(
         ),
     )
 
+def escape_quote(text):
+    text = text.replace("'", "\\'")
+    text = text.replace('"', '\\"')
+    return text
+
+def unescape(text):
+    text = text.replace('\\"', '\"')
+    text = text.replace("\\'", "\'")
+    return text
+    
 def create_message(message, user_id, group_id):
     cmd = f"INSERT INTO minichat.messages (message, user_id, group_id) VALUES ('{message}', '{user_id}', '{group_id}');"
     with db.connect() as conn:

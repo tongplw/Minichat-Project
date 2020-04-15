@@ -80,6 +80,15 @@ def login():
 
     return redirect(url_for("chat"))
 
+@app.route("/logout", methods=["POST"])
+def logout():
+    username = session["username"]
+    
+    # delete session username
+    session.pop("username")
+    logged_in_users.pop(username)
+
+    return redirect(url_for("index"))
 
 @app.route("/chat")
 @logged_in

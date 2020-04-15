@@ -81,6 +81,8 @@ document.addEventListener("DOMContentLoaded", () => {
                     socket.emit("reload channel history", channel);
                     // change chat header to selected channel
                     chatHeader.innerHTML = channel;
+                    const msgBody = document.querySelector(".msg_card_body");
+                    msgBody.scrollTop = msgBody.scrollHeight;
                 };
             };
         });
@@ -91,6 +93,7 @@ document.addEventListener("DOMContentLoaded", () => {
         // get message window
         windowMessages = document.querySelector(".msg_card_body");
         windowMessages.innerHTML += msg.text;
+        windowMessages.scrollTop = windowMessages.scrollHeight + windowMessages.clientHeight;
     });
 
     // user join to a channel

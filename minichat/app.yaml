@@ -15,4 +15,4 @@ runtime_config:
   python_version: 3
 
 manual_scaling:
-  instances: 1
+  instances: 2

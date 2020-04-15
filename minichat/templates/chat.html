@@ -48,6 +48,7 @@
     </div>
 </div>   
 <script>
+    import axios from 'axios';
     function logout(){
         axios.post("/logout").catch(error => console.log(error));
     }

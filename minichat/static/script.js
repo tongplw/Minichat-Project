@@ -14,8 +14,12 @@ document.addEventListener("DOMContentLoaded", () => {
             const newChannelName = document.querySelector(".search");
             socket.emit("create channel", { "name": newChannelName.value });
             newChannelName.value = "";
-
-
+        };
+        createChannelBtn.onkeypress = (event) => {
+            if (event.keyCode === 13) { 
+                event.preventDefault();
+                createChannelBtn.click(); 
+            }
         };
         
         // configure Send button

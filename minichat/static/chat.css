@@ -10,7 +10,11 @@ body,html{
     align-items: center;
     justify-content: center;
 }
-
+.transparent_btn{
+    background-color: Transparent; 
+    border: none; 
+    outline: none;
+}
 .chat{
     margin-top: auto;
     margin-bottom: auto;

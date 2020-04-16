@@ -167,7 +167,7 @@ def connect_to_channel(channel):
     join_room(name)
     emit(
         "user has joined",
-        f"{username} has joined to {name}</br>",
+        f'<span style="color:white;">{username} has joined to {name}</br>',
         room=name,
         include_self=False,
     )
@@ -179,7 +179,7 @@ def leave_channel():
         leave_room(session.get("channel"))
         emit(
             "user has left",
-            f"{session.get('username')} has left the {session.get('channel')}</br>",
+            f"""<span style="color: white;">{session.get('username')} has left the {session.get('channel')}</span></br>""",
             room=session.get("channel"),
             include_self=False,
         )

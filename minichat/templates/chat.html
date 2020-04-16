@@ -5,7 +5,9 @@
     <div class="row justify-content-end mt-3">
         <div class="col-1" style="position: absolute;">
             <!-- buttons -->
-            <div class="btn btn-danger" onclick="logout()">Log Out</div>
+            <form class="btn btn-danger" action="/logout" method="post">
+                <button class="transparent_btn" type="submit" formmethod="post">Log Out</button>
+            </form>
         </div>
     </div>
     <div class="row justify-content-center h-100">
@@ -28,7 +30,7 @@
         <div class="col-md-8 col-xl-6 chat">
             <div class="card">
                 <div class="card-header msg_head">
-                    <div class="d-flex bd-highlight">
+                    <div class="d-flex bd-highlight headline">
                         <!-- channel header -->
                     </div>							
                 </div>
@@ -48,13 +50,6 @@
     </div>
 </div> 
 
-
-<script>
-    const axios = require('axios').default;
-    function logout(){
-        axios.post("/logout").catch(error => console.log(error));
-    }
-</script> 
 
 {% endblock %}
 

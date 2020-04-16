@@ -76,8 +76,9 @@ def login():
     logged_in_users.append(username)
 
     # add user into database
-    db.create_user(username)
-
+    try: db.create_user(username)
+    except: pass
+    
     return redirect(url_for("chat"))
 
 @app.route("/logout", methods=["POST"])
@@ -86,7 +87,7 @@ def logout():
     
     # delete session username
     session.pop("username")
-    logged_in_users.pop(username)
+    logged_in_users.remove(username)
 
     return redirect(url_for("index"))
 

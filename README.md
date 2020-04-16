@@ -4,17 +4,18 @@
 
 ### 1 Development
 
+1. Install libraries
 ``` Shell
 cd <root>/minichat
-python main.py
+pip install -r requirements.txt
+```
+
+2. run development mode
+``` Shell
+cd <root>/minichat
+flask run 
 ```
 Then, the development website can be accessed in http://localhost:5000/
 
 ### 2 Deployment
-
-To run development mode, go into /.../minichat/ and run 
-```
-flask run 
-```
-
 `Master` branch is shown in http://chat.tongplw.codes/

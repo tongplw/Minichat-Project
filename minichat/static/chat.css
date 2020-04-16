@@ -3,17 +3,26 @@ body,html{
     margin: 0;
     background: #7F7FD5;
    background: -webkit-linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
-    background: linear-gradient(to right, #91EAE4, #86A8E7, #7F7FD5);
+    background: #36393f;
 }
 
 .Aligner-item {
     align-items: center;
     justify-content: center;
 }
-
+.transparent_btn{
+    background-color: Transparent; 
+    border: none; 
+    outline: none;
+    color:white;
+}
 .chat{
     margin-top: auto;
     margin-bottom: auto;
+}
+.headline{
+    font-size: 15px;
+    color: white;
 }
 .card{
     height: 500px;
@@ -133,7 +142,7 @@ margin-bottom: auto;
 margin-left: 15px;
 }
 .user_info span{
-font-size: 20px;
+font-size: 15px;
 color: white;
 }
 .user_info p{

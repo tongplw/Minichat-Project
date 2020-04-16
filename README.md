@@ -6,6 +6,7 @@
 
 ``` Shell
 cd <root>/minichat
+pip install -r requirements.txt
 python main.py
 ```
 Then, the development website can be accessed in http://localhost:5000/

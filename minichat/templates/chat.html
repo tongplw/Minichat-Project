@@ -5,8 +5,8 @@
     <div class="row justify-content-end mt-3">
         <div class="col-1" style="position: absolute;">
             <!-- buttons -->
-            <form action="/logout" method="post">
-                <button class="btn btn-danger" type="submit" formmethod="post">Log Out</div>
+            <form class="btn btn-danger" action="/logout" method="post">
+                <button type="submit" formmethod="post">Log Out</button>
             </form>
         </div>
     </div>
@@ -50,13 +50,6 @@
     </div>
 </div> 
 
-
-<script>
-    const axios = require('axios').default;
-    function logout(){
-        axios.post("/logout").catch(error => console.log(error));
-    }
-</script> 
 
 {% endblock %}
 

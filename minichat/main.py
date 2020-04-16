@@ -86,7 +86,7 @@ def logout():
     
     # delete session username
     session.pop("username")
-    logged_in_users.pop(username)
+    logged_in_users.remove(username)
 
     return redirect(url_for("index"))
 

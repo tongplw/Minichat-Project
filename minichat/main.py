@@ -27,7 +27,7 @@ channel_template = """
 
 msg_template = """
 <div class="d-flex justify-content-{to_user} mb-4">
-    <div class="msg_cotainer{send}">
+    <div class="msg_cotainer{send}" style="max-width: 20em;">
         <b>{username} </b>{text}
     </div>
 </div>

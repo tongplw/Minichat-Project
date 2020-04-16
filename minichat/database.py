@@ -12,6 +12,7 @@ db = sqlalchemy.create_engine(
     )
 
 def escape(text):
+    text = text.replace("\\", "\\\\")
     text = text.replace("'", "\\'")
     text = text.replace('"', '\\"')
     return text

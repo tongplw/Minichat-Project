@@ -15,7 +15,9 @@ document.addEventListener("DOMContentLoaded", () => {
             socket.emit("create channel", { "name": newChannelName.value });
             newChannelName.value = "";
         };
-        createChannelBtn.onkeypress = (event) => {
+        
+        newChannelArea = document.querySelector(".search");
+        newChannelArea.onkeypress = (event) => {
             if (event.keyCode === 13) { 
                 event.preventDefault();
                 createChannelBtn.click(); 

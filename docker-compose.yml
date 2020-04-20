@@ -1,0 +1,33 @@
+version: '3'
+
+services: 
+
+    db:
+        build: db_docker
+        ports: 
+            - 3308:3306
+        # healthcheck:
+        #     test: "/usr/bin/mysql --user=chat --password=123 --execute \"SHOW DATABASES;\""
+        #     timeout: 30s
+        #     retries: 10
+     
+    minichat:
+        build: minichat
+        # depends_on: 
+        #     db:
+        #         condition: service_healthy
+        links: 
+            - db
+        depends_on: 
+            - db
+
+    nginx:
+        container_name: nginx
+        build: nginx
+        ports: 
+            - 80:80
+        depends_on: 
+            - minichat
+            - db
+    
+    

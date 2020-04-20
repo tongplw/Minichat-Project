@@ -1,0 +1,8 @@
+FROM mysql
+
+ENV MYSQL_ROOT_PASSWORD parallel
+ENV MYSQL_DATABASE minichat
+ENV MYSQL_USER chat
+ENV MYSQL_PASSWORD 123
+
+ADD ./dump /docker-entrypoint-initdb.d

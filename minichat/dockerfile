@@ -1,0 +1,18 @@
+FROM python:3.6
+
+EXPOSE 5000
+
+#create workdir
+WORKDIR /minichat
+
+# copy requirement
+COPY requirements.txt .
+# install requirement
+RUN pip install -r requirements.txt
+## fucking Gavent can't use with pure alpine build
+
+
+# copy files
+COPY . .
+# run
+CMD python main.py

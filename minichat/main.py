@@ -1,16 +1,25 @@
 import os
 import database as db
+import time
 
 from functools import wraps
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask import Flask, session, render_template, request, redirect, url_for
 
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
+status = False
 
-
+# while(not status):
+#     try:
+#         logged_in_users = db.load_users()
+#         channel_list = db.load_channels()
+#         history = db.load_channels_history()
+#         status = True
+#     except:
+#         time.sleep(30)
+#         continue
 logged_in_users = db.load_users()
 channel_list = db.load_channels()
 history = db.load_channels_history()
@@ -227,4 +236,5 @@ def load_channels():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    print("flask running")
+    socketio.run(app, host='0.0.0.0', debug=True)

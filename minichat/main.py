@@ -1,17 +1,16 @@
 import os
 import database as db
+import time
 
 from functools import wraps
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask import Flask, session, render_template, request, redirect, url_for
 
-
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
 
-
-logged_in_users = db.load_usernames()
+logged_in_users = db.load_users()
 channel_list = db.load_channels()
 history = db.load_channels_history()
 
@@ -35,7 +34,7 @@ msg_template = """
 
 def sync_db():
     global logged_in_users, channel_list, history
-    logged_in_users = db.load_usernames()
+    logged_in_users = db.load_users()
     channel_list = db.load_channels()
     history = db.load_channels_history()   
 
@@ -67,12 +66,10 @@ def login():
 
     # check that username is free
     if username in logged_in_users:
-        if db.can_login(username):
-            db.check_online(username)
-        else:
-            return "Username is busy"
-    else:
-        db.create_user(username)
+        return "Username is busy"
+    
+    db.create_user(username)
+    db.check_online(username)
 
     # create session for new user
     session["username"] = username
@@ -84,8 +81,10 @@ def login():
 def logout():
     username = session["username"]
     
+    # print(username)##
+
     # delete session username
-    session.pop("username")
+    session.pop("username", None)
     logged_in_users.remove(username)
     db.check_offline(username)
 
@@ -227,4 +226,5 @@ def load_channels():
 
 
 if __name__ == '__main__':
-    socketio.run(app, debug=True)
+    print("flask running")
+    socketio.run(app, host='0.0.0.0', debug=True)

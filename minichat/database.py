@@ -72,7 +72,7 @@ def can_login(username):
     with db.connect() as conn:
         result = conn.execute(cmd)
     is_online, last_login = result.fetchone()
-    if last_login < datetime.now() - timedelta(hours=1) or not is_online:
+    if last_login < datetime.datetime.now() - timedelta(hours=1) or not is_online:
         return True
     return False
 

@@ -77,12 +77,12 @@ def can_login(username):
 
 def check_online(username):
     username = escape(username)
-    cmd = f"UPDATE minichat.users SET is_online=0, last_login=CURRENT_TIMESTAMP WHERE username='{username}';"
+    cmd = f"UPDATE minichat.users SET is_online=1, last_login=CURRENT_TIMESTAMP WHERE username='{username}';"
     with db.connect() as conn:
         conn.execute(cmd)
 
 def check_offline(username):
     username = escape(username)
-    cmd = f"UPDATE minichat.users SET is_online=1 WHERE username='{username}';"
+    cmd = f"UPDATE minichat.users SET is_online=0 WHERE username='{username}';"
     with db.connect() as conn:
         conn.execute(cmd)

@@ -80,14 +80,11 @@ def login():
 @app.route("/logout", methods=["POST"])
 def logout():
     username = session["username"]
-    
-    # print(username)##
-
-    # delete session username
     session.pop("username", None)
-    if username in logged_in_users:
-        logged_in_users.remove(username)
     db.check_offline(username)
+
+    while username in logged_in_users:
+        logged_in_users.remove(username)
 
     return redirect(url_for("index"))
 

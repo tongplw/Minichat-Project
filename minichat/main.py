@@ -85,7 +85,8 @@ def logout():
 
     # delete session username
     session.pop("username", None)
-    logged_in_users.remove(username)
+    if username in logged_in_users:
+        logged_in_users.remove(username)
     db.check_offline(username)
 
     return redirect(url_for("index"))

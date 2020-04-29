@@ -45,7 +45,7 @@ def load_channels():
         return [i[0] for i in result.fetchall()]
 
 def load_users():
-    cmd = f'SELECT username FROM minichat.users WHERE last_login > date_sub(NOW(), interval 1 hour) OR is_online = 1;'
+    cmd = f'SELECT username FROM minichat.users WHERE last_login > date_sub(NOW(), interval 1 hour) AND is_online = 1;'
     with db.connect() as conn:
         result = conn.execute(cmd)
         return [i[0] for i in result.fetchall()]

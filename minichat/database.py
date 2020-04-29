@@ -1,6 +1,5 @@
 import sqlalchemy
-import datetime
-from datetime import date, timedelta
+from datetime import datetime, timedelta
 
 
 db = sqlalchemy.create_engine(
@@ -29,7 +28,7 @@ def create_message(message, user_id, group_id):
 
 def create_user(name):
     name = escape(name)
-    cmd = f"INSERT INTO minichat.users (username, is_online, last_login) VALUES ('{name}', 1, CURRENT_TIMESTAMP);"
+    cmd = f"INSERT IGNORE INTO minichat.users (username, is_online, last_login) VALUES ('{name}', 1, CURRENT_TIMESTAMP);"
     with db.connect() as conn:
         conn.execute(cmd)
 
@@ -49,10 +48,12 @@ def load_users():
     cmd = f'SELECT * FROM minichat.users;'
     with db.connect() as conn:
         result = conn.execute(cmd)
-        return result.fetchall()
-
-def load_usernames():
-    return [i[0] for i in load_users()]
+        out = []
+        for row in result.fetchall():
+            username, _, is_online, last_login = row
+            if can_login(is_online, last_login):
+                out += [username]
+    return out
 
 def load_channels_history():
     cmd = f'SELECT * FROM minichat.messages ORDER BY sent_on;'
@@ -60,19 +61,14 @@ def load_channels_history():
         result = conn.execute(cmd)
     history = {}
     for channel in load_channels():
-        history[channel] = []
+        history[str(channel)] = []
     for record in result.fetchall():
         message, username, channel = record[1:4]
         history[channel].append((username, message))
     return history
 
-def can_login(username):
-    username = escape(username)
-    cmd = f"SELECT is_online, last_login FROM minichat.users WHERE username='{username}';"
-    with db.connect() as conn:
-        result = conn.execute(cmd)
-    is_online, last_login = result.fetchone()
-    if last_login < datetime.datetime.now() - timedelta(hours=1) or not is_online:
+def can_login(is_online, last_login):
+    if last_login < datetime.now() - timedelta(hours=1) or not is_online:
         return True
     return False
 

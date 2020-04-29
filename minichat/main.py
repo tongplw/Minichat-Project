@@ -71,14 +71,12 @@ def login():
             db.check_online(username)
         else:
             return "Username is busy"
+    else:
+        db.create_user(username)
 
     # create session for new user
     session["username"] = username
     logged_in_users.append(username)
-    
-    # add user into database
-    try: db.create_user(username)
-    except: pass
     
     return redirect(url_for("chat"))
 

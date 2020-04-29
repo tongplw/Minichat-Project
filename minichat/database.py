@@ -28,7 +28,7 @@ def create_message(message, user_id, group_id):
 
 def create_user(name):
     name = escape(name)
-    cmd = f"INSERT INTO minichat.users (username, is_online, last_login) VALUES ('{name}', '{True}', 'CURRENT_TIMESTAMP');"
+    cmd = f"INSERT INTO minichat.users (username, is_online, last_login) VALUES ('{name}', 1, CURRENT_TIMESTAMP);"
     with db.connect() as conn:
         conn.execute(cmd)
 
@@ -70,7 +70,7 @@ def can_login(username):
     cmd = f"SELECT is_online, last_login FROM minichat.users WHERE username='{username}';"
     with db.connect() as conn:
         result = conn.execute(cmd)
-    is_online, last_login = result
+    is_online, last_login = result.fetchone()
     if last_login < date.today() - timedelta(hours=1) or not is_online:
         return True
     return False

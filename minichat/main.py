@@ -68,7 +68,7 @@ def login():
     # check that username is free
     if username in logged_in_users:
         if db.can_login(username):
-            db.check_online(username):
+            db.check_online(username)
         else:
             return "Username is busy"
 

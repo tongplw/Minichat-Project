@@ -76,8 +76,8 @@ def login():
         return "Username is empty"
 
     # check that username is free
-    if username in logged_in_users:
-        return "Username is busy"
+    # if username in logged_in_users:
+    #     return "Username is busy"
 
     # create session for new user
     session["username"] = username
@@ -94,8 +94,10 @@ def login():
 def logout():
     username = session["username"]
     
+    # print(username)##
+
     # delete session username
-    session.pop("username")
+    session.pop("username", None)
     logged_in_users.remove(username)
 
     return redirect(url_for("index"))

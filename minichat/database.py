@@ -18,7 +18,7 @@ import sqlalchemy
 
 # load_dotenv()
 # print(os.getenv("DB_URL"))# 
-DB_URI = "mysql+pymysql://root:parallel@chat_db_1:3306/minichat"
+DB_URI = "mysql+pymysql://chat:123@chat_db_1:3306/minichat"
 print(DB_URI)#
 db= sqlalchemy.create_engine(DB_URI)
 

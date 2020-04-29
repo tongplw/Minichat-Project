@@ -11,7 +11,7 @@ app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
 
 
-logged_in_users = db.load_users()
+logged_in_users = db.load_usernames()
 channel_list = db.load_channels()
 history = db.load_channels_history()
 
@@ -35,10 +35,9 @@ msg_template = """
 
 def sync_db():
     global logged_in_users, channel_list, history
-    logged_in_users = db.load_users()
+    logged_in_users = db.load_usernames()
     channel_list = db.load_channels()
-    history = db.load_channels_history()
-
+    history = db.load_channels_history()   
 
 def logged_in(func):
     @wraps(func)
@@ -68,13 +67,15 @@ def login():
 
     # check that username is free
     if username in logged_in_users:
-        return "Username is busy"
+        if db.can_login(username):
+            db.check_online(username):
+        else:
+            return "Username is busy"
 
     # create session for new user
     session["username"] = username
-    print(session)
     logged_in_users.append(username)
-
+    
     # add user into database
     try: db.create_user(username)
     except: pass
@@ -88,6 +89,7 @@ def logout():
     # delete session username
     session.pop("username")
     logged_in_users.remove(username)
+    db.check_offline(username)
 
     return redirect(url_for("index"))
 

@@ -1,4 +1,5 @@
 import sqlalchemy
+from datetime import date, timedelta
 
 
 db = sqlalchemy.create_engine(
@@ -27,7 +28,7 @@ def create_message(message, user_id, group_id):
 
 def create_user(name):
     name = escape(name)
-    cmd = f"INSERT INTO minichat.users (username) VALUES ('{name}');"
+    cmd = f"INSERT INTO minichat.users (username, is_online, last_login) VALUES ('{name}', '{True}', 'CURRENT_TIMESTAMP');"
     with db.connect() as conn:
         conn.execute(cmd)
 
@@ -47,7 +48,10 @@ def load_users():
     cmd = f'SELECT * FROM minichat.users;'
     with db.connect() as conn:
         result = conn.execute(cmd)
-        return [i[0] for i in result.fetchall()]
+        return result.fetchall()
+
+def load_usernames():
+    return [i[0] for i in load_users()]
 
 def load_channels_history():
     cmd = f'SELECT * FROM minichat.messages ORDER BY sent_on;'
@@ -60,3 +64,25 @@ def load_channels_history():
         message, username, channel = record[1:4]
         history[channel].append((username, message))
     return history
+
+def can_login(username):
+    username = escape(username)
+    cmd = f"SELECT is_online, last_login FROM minichat.users WHERE username='{username}';"
+    with db.connect() as conn:
+        result = conn.execute(cmd)
+    is_online, last_login = result
+    if last_login < date.today() - timedelta(hours=1) or not is_online:
+        return True
+    return False
+
+def check_online(username):
+    username = escape(username)
+    cmd = f"UPDATE minichat.users SET is_online=0, last_login=CURRENT_TIMESTAMP WHERE username='{username}';"
+    with db.connect() as conn:
+        conn.execute(cmd)
+
+def check_offline(username):
+    username = escape(username)
+    cmd = f"UPDATE minichat.users SET is_online=1 WHERE username='{username}';"
+    with db.connect() as conn:
+        conn.execute(cmd)

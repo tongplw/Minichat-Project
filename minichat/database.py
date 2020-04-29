@@ -45,15 +45,10 @@ def load_channels():
         return [i[0] for i in result.fetchall()]
 
 def load_users():
-    cmd = f'SELECT * FROM minichat.users;'
+    cmd = f'SELECT username FROM minichat.users WHERE last_login > date_sub(NOW(), interval 1 hour) OR is_online = 1;'
     with db.connect() as conn:
         result = conn.execute(cmd)
-        out = []
-        for row in result.fetchall():
-            username, _, is_online, last_login = row
-            if can_login(is_online, last_login):
-                out += [username]
-    return out
+        return [i[0] for i in result.fetchall()]
 
 def load_channels_history():
     cmd = f'SELECT * FROM minichat.messages ORDER BY sent_on;'
@@ -66,11 +61,6 @@ def load_channels_history():
         message, username, channel = record[1:4]
         history[channel].append((username, message))
     return history
-
-def can_login(is_online, last_login):
-    if last_login < datetime.now() - timedelta(hours=1) or not is_online:
-        return True
-    return False
 
 def check_online(username):
     username = escape(username)

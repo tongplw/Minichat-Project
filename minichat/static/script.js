@@ -83,6 +83,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     const channelName = chatHeader.id.split("-")[0];
                     const channelStatus = chatHeader.id.split("-")[1];
                     console.log(chatHeader.id);
+                    // confirm('Test confirm la');
                     // leave current channel
                     socket.emit("leave channel")
                     // connect to channel

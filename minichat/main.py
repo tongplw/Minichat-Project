@@ -15,7 +15,7 @@ channel_list = db.load_channels()
 history = db.load_channels_history()
 
 channel_template = """
-<li class="{is_active}">
+<li class="{is_active}" onClick=joinGroup({})>
     <div class="d-flex bd-highlight">
         <div class="user_info">
             <span>{channel_name}</span>

@@ -32,6 +32,6 @@ CREATE TABLE `group_user` (
   `group` VARCHAR(255) NOT NULL,
   `user` VARCHAR(255) NOT NULL,
   PRIMARY KEY (`group`, `user`),
-  FOREIGN KEY(`group`) REFERENCES `groups`(`name`)
-  FOREIGN KEY(`user`) REFERENCES `users`(`username`),
+  FOREIGN KEY(`group`) REFERENCES `groups`(`name`),
+  FOREIGN KEY(`user`) REFERENCES `users`(`username`)
 );

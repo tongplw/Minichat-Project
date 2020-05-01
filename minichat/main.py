@@ -175,15 +175,15 @@ def connect_to_channel(channel):
     session["channel"] = name
     username = session.get("username")
     join_room(name)
-    if username not in channel_list:
-        channel_list[name] += [username]
-        db.join_channel(username, name)
+    if username not in channel_list[name]:
         emit(
             "user has joined",
             f'<span style="color:white;">{username} has joined to {name}</br>',
             room=name,
             include_self=False,
         )
+        channel_list[name] += [username]
+        db.join_channel(username, name)
 
 
 @socketio.on("leave channel")

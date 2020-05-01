@@ -7,6 +7,7 @@ def escape(text):
     text = text.replace("\\", "\\\\")
     text = text.replace("'", "\\'")
     text = text.replace('"', '\\"')
+    text = text.replace(';', '\\;')
     return text
     
 def create_message(message, user_id, group_id):
@@ -32,7 +33,7 @@ def create_group(name):
 def join_channel(username, group_name):
     username = escape(username)
     group_name = escape(group_name)
-    cmd = f"INSERT INTO minichat.group_user (user, group) VALUES ('{username}', '{group_name}');"
+    cmd = f"INSERT INTO minichat.group_user (group, user) VALUES ('{group_name}', '{username}');"
     with db.connect() as conn:
         conn.execute(cmd)
 
@@ -44,14 +45,16 @@ def leave_channel(username, channel_name):
         conn.execute(cmd)
 
 def load_channels():
-    cmd = f'SELECT * FROM minichat.group_user;'
+    cmd1 = f'SELECT * FROM minichat.groups;'
+    cmd2 = f'SELECT * FROM minichat.group_user;'
     with db.connect() as conn:
-        result = conn.execute(cmd)
+        result = conn.execute(cmd1)
         out = {}
+        for i in result.fetchall():
+            out[i[0]] = []
+        result = conn.execute(cmd2)
         for group, user in result.fetchall():
-            if group not in out:
-                out[group] = []
-            out[groupd] += [user]
+            out[group] += [user]
         return out
 
 def load_users():

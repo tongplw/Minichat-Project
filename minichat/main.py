@@ -98,9 +98,9 @@ def logout():
 @logged_in
 def chat():
     sync_db()
-    return render_template(
-        "chat.html", page_title="Chat", username=session.get("username")
-    )
+    if session["username"] not in logged_in_users:
+        return redirect(url_for("index"))
+    return render_template("chat.html", page_title="Chat", username=session.get("username"))
 
 
 @socketio.on("create channel")

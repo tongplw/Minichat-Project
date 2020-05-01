@@ -1,5 +1,4 @@
 import sqlalchemy
-from datetime import datetime, timedelta
 
 DB_URI = "mysql+pymysql://chat:123@chat_db_1:3306/minichat"
 db = sqlalchemy.create_engine(DB_URI)

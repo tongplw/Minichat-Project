@@ -32,14 +32,14 @@ def create_group(name):
 def join_channel(username, group_name):
     username = escape(username)
     group_name = escape(group_name)
-    cmd = f"INSERT INTO minichat.group_user (group, user) VALUES ('{group_name}', '{username}');"
+    cmd = f"INSERT INTO minichat.group_user (`group`, `user`) VALUES ('{group_name}', '{username}');"
     with db.connect() as conn:
         conn.execute(cmd)
 
 def leave_channel(username, group_name):
     username = escape(username)
     group_name = escape(group_name)
-    cmd = f"DELETE FROM minichat.group_user WHERE user = '{username}' AND group = '{group_name}';"
+    cmd = f"DELETE FROM minichat.group_user WHERE user = '{username}' AND `group` = '{group_name}';"
     with db.connect() as conn:
         conn.execute(cmd)
 

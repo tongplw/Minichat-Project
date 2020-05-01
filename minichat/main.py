@@ -113,7 +113,7 @@ def create_channel(name):
     elif not n:
         emit("error", "Channel name is empty")
     else:
-        channel_list.append(n)
+        channel_list[n] = []
         history[n] = []
         data = channel_template.format(is_active="", channel_name=n)
         emit("channel created", data, broadcast=True)
@@ -175,18 +175,23 @@ def connect_to_channel(channel):
     session["channel"] = name
     username = session.get("username")
     join_room(name)
-    emit(
-        "user has joined",
-        f'<span style="color:white;">{username} has joined to {name}</br>',
-        room=name,
-        include_self=False,
-    )
+    if username not in channel_list:
+        channel_list[name] += [username]
+        db.join_channel(username, name)
+        emit(
+            "user has joined",
+            f'<span style="color:white;">{username} has joined to {name}</br>',
+            room=name,
+            include_self=False,
+        )
 
 
 @socketio.on("leave channel")
 def leave_channel():
     if "channel" in session.keys():
         leave_room(session.get("channel"))
+        channel_list[name].remove(username)
+        db.leave_channel(username, name)
         emit(
             "user has left",
             f"""<span style="color: white;">{session.get('username')} has left the {session.get('channel')}</span></br>""",

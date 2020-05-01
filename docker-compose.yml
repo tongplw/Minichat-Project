@@ -6,14 +6,18 @@ services:
         build: db_docker
         ports: 
             - 3308:3306
-     
+        environment:
+            TZ: Asia/Bangkok
+         
     minichat:
         build: minichat
         links: 
             - db
         depends_on: 
             - db
-
+        environment:
+            TZ: Asia/Bangkok
+         
     nginx:
         container_name: nginx
         build: nginx

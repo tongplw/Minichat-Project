@@ -29,9 +29,9 @@ CREATE TABLE `messages` (
 
 DROP TABLE IF EXISTS `group_user`;
 CREATE TABLE `group_user` (
-  `user_id` VARCHAR(255) NOT NULL,
-  `group_id` VARCHAR(255) NOT NULL,
-  PRIMARY KEY (`user_id`, `group_id`),
-  FOREIGN KEY(`user_id`) REFERENCES `users`(`username`),
-  FOREIGN KEY(`group_id`) REFERENCES `groups`(`name`)
+  `group` VARCHAR(255) NOT NULL,
+  `user` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`group`, `user`),
+  FOREIGN KEY(`group`) REFERENCES `groups`(`name`)
+  FOREIGN KEY(`user`) REFERENCES `users`(`username`),
 );

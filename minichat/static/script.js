@@ -80,6 +80,9 @@ document.addEventListener("DOMContentLoaded", () => {
                 div.parentNode.onclick = () => {
                     const chatHeader = document.querySelector(".msg_head > .bd-highlight");
                     const channel = div.querySelector("span").textContent;
+                    const channelName = chatHeader.id.split("-")[0];
+                    const channelStatus = chatHeader.id.split("-")[1];
+                    console.log(chatHeader.id);
                     // leave current channel
                     socket.emit("leave channel")
                     // connect to channel

@@ -189,6 +189,8 @@ def connect_to_channel(channel):
 @socketio.on("leave channel")
 def leave_channel():
     if "channel" in session.keys():
+        name = session["channel"]
+        username = session['username']
         leave_room(session.get("channel"))
         channel_list[name].remove(username)
         db.leave_channel(username, name)

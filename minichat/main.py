@@ -9,17 +9,7 @@ from flask import Flask, session, render_template, request, redirect, url_for
 app = Flask(__name__)
 app.config["SECRET_KEY"] = "123"
 socketio = SocketIO(app)
-status = False
 
-# while(not status):
-#     try:
-#         logged_in_users = db.load_users()
-#         channel_list = db.load_channels()
-#         history = db.load_channels_history()
-#         status = True
-#     except:
-#         time.sleep(30)
-#         continue
 logged_in_users = db.load_users()
 channel_list = db.load_channels()
 history = db.load_channels_history()
@@ -46,8 +36,7 @@ def sync_db():
     global logged_in_users, channel_list, history
     logged_in_users = db.load_users()
     channel_list = db.load_channels()
-    history = db.load_channels_history()
-
+    history = db.load_channels_history()   
 
 def logged_in(func):
     @wraps(func)
@@ -64,6 +53,7 @@ def logged_in(func):
 def index():
     if "username" in session:
         return redirect(url_for("chat"))
+    sync_db()
     return render_template("index.html", page_title="Login")
 
 
@@ -76,29 +66,28 @@ def login():
         return "Username is empty"
 
     # check that username is free
-    # if username in logged_in_users:
-    #     return "Username is busy"
+    if username in logged_in_users:
+        return "Username is busy"
+    
+    db.create_user(username)
+    db.check_online(username)
 
     # create session for new user
     session["username"] = username
-    print(session)
     logged_in_users.append(username)
-
-    # add user into database
-    try: db.create_user(username)
-    except: pass
     
     return redirect(url_for("chat"))
 
 @app.route("/logout", methods=["POST"])
 def logout():
     username = session["username"]
-    
-    # print(username)##
 
     # delete session username
     session.pop("username", None)
-    logged_in_users.remove(username)
+    db.check_offline(username)
+
+    while username in logged_in_users:
+        logged_in_users.remove(username)
 
     return redirect(url_for("index"))
 

@@ -3,27 +3,34 @@ CREATE DATABASE IF NOT EXISTS minichat;
 USE minichat;
 
 DROP TABLE IF EXISTS `users`;
+DROP TABLE IF EXISTS `groups`;
+DROP TABLE IF EXISTS `messages`;
+DROP TABLE IF EXISTS `group_user`;
+
 
 CREATE TABLE `users` (
-  `username` varchar(255) PRIMARY KEY,
-  `password` varchar(255) NULL
+  `username` VARCHAR(255) PRIMARY KEY,
+  `password` VARCHAR(255) NULL,
+  `is_online` boolean NOT NULL,
+  `last_login` TIMESTAMP CURRENT_TIMESTAMP
 );
 
-
 CREATE TABLE `groups` (
-  name varchar(255) PRIMARY KEY
+  `name` VARCHAR(255) PRIMARY KEY
 );
 
 CREATE TABLE `messages` (
   `id` int(11) unsigned PRIMARY KEY AUTO_INCREMENT,
-  `message` varchar(255) null,
-  `user_id` varchar(255),
-  `group_id` varchar(255),
-  `sent_on` timestamp default current_timestamp,
-  foreign key(`user_id`) references `users`(`username`),
-  foreign key(`group_id`) references `groups`(`name`)
+  `message` VARCHAR(255),
+  `user_id` VARCHAR(255),
+  `group_id` VARCHAR(255),
+  `sent_on` TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 );	
 
-	
-
-
+CREATE TABLE `group_user` (
+  `user_id` VARCHAR(255) NOT NULL,
+  `group_id` VARCHAR(255) NOT NULL,
+  PRIMARY KEY (`user_id`, `group_id`)
+  FOREIGN KEY(`user_id`) REFERENCES `users`(`username`),
+  FOREIGN KEY(`group_id`) REFERENCES `groups`(`name`)
+);

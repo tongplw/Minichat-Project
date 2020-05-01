@@ -1,26 +1,8 @@
 import sqlalchemy
+from datetime import datetime, timedelta
 
-# Cloud SQL
-# db = sqlalchemy.create_engine(
-#         sqlalchemy.engine.url.URL(
-#             drivername="mysql+gaerdmbs",
-#             username="root",
-#             password="root",
-#             database="minichat",
-#             query={"unix_socket": "/cloudsql/minichat-274103:asia-southeast1:minichat-database"},
-#         ),
-#     )
-
-# FOR LOCAL development database w/ docker with nginx as load balancer 
-# Pinn choose MySQL haha :)
-# from dotenv import load_dotenv
-# import os
-
-# load_dotenv()
-# print(os.getenv("DB_URL"))# 
 DB_URI = "mysql+pymysql://chat:123@chat_db_1:3306/minichat"
-print(DB_URI)#
-db= sqlalchemy.create_engine(DB_URI)
+db = sqlalchemy.create_engine(DB_URI)
 
 def escape(text):
     text = text.replace("\\", "\\\\")
@@ -38,7 +20,7 @@ def create_message(message, user_id, group_id):
 
 def create_user(name):
     name = escape(name)
-    cmd = f"INSERT INTO minichat.users (username) VALUES ('{name}');"
+    cmd = f"INSERT IGNORE INTO minichat.users (username, is_online, last_login) VALUES ('{name}', 1, CURRENT_TIMESTAMP);"
     with db.connect() as conn:
         conn.execute(cmd)
 
@@ -55,7 +37,7 @@ def load_channels():
         return [i[0] for i in result.fetchall()]
 
 def load_users():
-    cmd = f'SELECT * FROM minichat.users;'
+    cmd = f'SELECT username FROM minichat.users WHERE last_login > date_sub(NOW(), interval 1 hour) AND is_online = 1;'
     with db.connect() as conn:
         result = conn.execute(cmd)
         return [i[0] for i in result.fetchall()]
@@ -71,3 +53,15 @@ def load_channels_history():
         message, username, channel = record[1:4]
         history[str(channel)].append((str(username), str(message)))
     return history
+
+def check_online(username):
+    username = escape(username)
+    cmd = f"UPDATE minichat.users SET is_online=1, last_login=CURRENT_TIMESTAMP WHERE username='{username}';"
+    with db.connect() as conn:
+        conn.execute(cmd)
+
+def check_offline(username):
+    username = escape(username)
+    cmd = f"UPDATE minichat.users SET is_online=0 WHERE username='{username}';"
+    with db.connect() as conn:
+        conn.execute(cmd)

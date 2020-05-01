@@ -7,7 +7,6 @@ def escape(text):
     text = text.replace("\\", "\\\\")
     text = text.replace("'", "\\'")
     text = text.replace('"', '\\"')
-    text = text.replace(';', '\\;')
     return text
     
 def create_message(message, user_id, group_id):
@@ -37,7 +36,7 @@ def join_channel(username, group_name):
     with db.connect() as conn:
         conn.execute(cmd)
 
-def leave_channel(username, channel_name):
+def leave_channel(username, group_name):
     username = escape(username)
     group_name = escape(group_name)
     cmd = f"DELETE FROM minichat.group_user WHERE user = '{username}' AND group = '{group_name}';"

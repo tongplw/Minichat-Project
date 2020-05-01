@@ -50,8 +50,8 @@ def load_channels_history():
     for channel in load_channels():
         history[str(channel)] = []
     for record in result.fetchall():
-        message, username, channel = record[1:4]
-        history[str(channel)].append((str(username), str(message)))
+        message, username, channel, timstamp = record[1:5]
+        history[str(channel)].append((str(username), str(message), timstamp))
     return history
 
 def check_online(username):

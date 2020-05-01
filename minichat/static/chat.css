@@ -16,6 +16,13 @@ body,html{
     outline: none;
     color:white;
 }
+.timestamp{
+    color: grey; 
+    font-size: 11px;
+    margin-bottom: 15px;
+    margin-right: 15px;
+    margin-left: 15px;
+}
 .chat{
     margin-top: auto;
     margin-bottom: auto;
@@ -55,8 +62,8 @@ border-radius: 0 0 15px 15px !important;
     color:white !important;
 }
 .search:focus{
-     box-shadow:none !important;
-   outline:0px !important;
+    box-shadow:none !important;
+    outline:0px !important;
 }
 .type_msg{
     background-color: rgba(0,0,0,0.3) !important;
@@ -66,19 +73,19 @@ border-radius: 0 0 15px 15px !important;
     overflow-y: auto;
 }
     .type_msg:focus{
-     box-shadow:none !important;
-   outline:0px !important;
+    box-shadow:none !important;
+    outline:0px !important;
 }
 .attach_btn{
-border-radius: 15px 0 0 15px !important;
-background-color: rgba(0,0,0,0.3) !important;
+    border-radius: 15px 0 0 15px !important;
+    background-color: rgba(0,0,0,0.3) !important;
     border:0 !important;
     color: white !important;
     cursor: pointer;
 }
 .send_btn{
-border-radius: 0 15px 15px 0 !important;
-background-color: rgba(0,0,0,0.3) !important;
+    border-radius: 0 15px 15px 0 !important;
+    background-color: rgba(0,0,0,0.3) !important;
     border:0 !important;
     color: white !important;
     cursor: pointer;

@@ -1,7 +1,7 @@
 import os
 import database as db
-import time
 
+from datetime import datetime
 from functools import wraps
 from flask_socketio import SocketIO, emit, join_room, leave_room
 from flask import Flask, session, render_template, request, redirect, url_for
@@ -25,10 +25,13 @@ channel_template = """
 """
 
 msg_template = """
-<div class="d-flex justify-content-{to_user} mb-4">
+<div class="d-flex justify-content-{to_user} ">
     <div class="msg_cotainer{send}" style="max-width: 20em;">
         <b>{username} </b>{text}
     </div>
+</div>
+<div class="d-flex justify-content-{to_user} timestamp ">
+    {timestamp}
 </div>
 """
 
@@ -128,7 +131,7 @@ def send_message(message):
     else:
         channel = session.get("channel")
         username = session.get("username")
-        history[channel].append((username, message["text"]))
+        history[channel].append((username, message["text"], datetime.now()))
 
 
         # send msg for current user
@@ -136,7 +139,11 @@ def send_message(message):
             "receive message",
             {
                 "text": msg_template.format(
-                    to_user="end", text=message["text"], send="_send", username="",
+                    to_user="end", 
+                    text=message["text"], 
+                    send="_send", 
+                    username="", 
+                    timestamp=datetime.now().strftime("%H:%M"),
                 )
             },
         )
@@ -150,6 +157,7 @@ def send_message(message):
                     text=message["text"],
                     send="",
                     username="".join([username, ": "]),
+                    timestamp=datetime.now().strftime("%H:%M")
                 ),
             },
             room=session.get("channel"),
@@ -199,7 +207,11 @@ def reload_channel_history(name):
             if msg[0] == username:
                 channel_history.append(
                     msg_template.format(
-                        to_user="end", text=msg[1], send="_send", username="",
+                        to_user="end", 
+                        text=msg[1], 
+                        send="_send", 
+                        username="",
+                        timestamp=msg[2].strftime("%H:%M"),
                     )
                 )
             else:
@@ -209,6 +221,7 @@ def reload_channel_history(name):
                         text=msg[1],
                         send="",
                         username="".join([msg[0], ": "]),
+                        timestamp=msg[2].strftime("%H:%M"),
                     )
                 )
         emit("receive message", {"text": "".join(channel_history)})

@@ -29,11 +29,30 @@ def create_group(name):
     with db.connect() as conn:
         conn.execute(cmd)
 
+def join_channel(username, group_name):
+    username = escape(username)
+    group_name = escape(group_name)
+    cmd = f"INSERT INTO minichat.group_user (user, group) VALUES ('{username}', '{group_name}');"
+    with db.connect() as conn:
+        conn.execute(cmd)
+
+def leave_channel(username, channel_name):
+    username = escape(username)
+    group_name = escape(group_name)
+    cmd = f"DELETE FROM minichat.group_user WHERE user = '{username}' AND group = '{group_name}';"
+    with db.connect() as conn:
+        conn.execute(cmd)
+
 def load_channels():
-    cmd = f'SELECT * FROM minichat.groups;'
+    cmd = f'SELECT * FROM minichat.group_user;'
     with db.connect() as conn:
         result = conn.execute(cmd)
-        return [i[0] for i in result.fetchall()]
+        out = {}
+        for group, user in result.fetchall():
+            if group not in out:
+                out[group] = []
+            out[groupd] += [user]
+        return out
 
 def load_users():
     cmd = f'SELECT username FROM minichat.users WHERE last_login > date_sub(NOW(), interval 1 hour) AND is_online = 1;'

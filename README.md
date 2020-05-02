@@ -5,7 +5,7 @@
 ### 1 Development
 
 ``` Shell
-cd <root>/minichat
+cd <root>
 docker-compose up --scale minichat=2
 ```
 Then, the development website can be accessed in http://localhost/
